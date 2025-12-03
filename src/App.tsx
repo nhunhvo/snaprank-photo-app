@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AppProvider } from './context/AppContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navigation } from './components/Navigation';
 import { HomePage } from './components/HomePage';
 import { UploadPage } from './components/UploadPage';
@@ -7,11 +8,17 @@ import { LeaderboardPage } from './components/LeaderboardPage';
 import { HallOfFamePage } from './components/HallOfFamePage';
 import { ProfilePage } from './components/ProfilePage';
 import { CategoryDetailPage } from './components/CategoryDetailPage';
+import { AuthPage } from './components/AuthPage';
 import { Toaster } from './components/ui/sonner';
 
-export default function App() {
+function AppContent() {
+  const { isAuthenticated } = useAuth();
   const [currentView, setCurrentView] = useState('home');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+
+  if (!isAuthenticated) {
+    return <AuthPage />;
+  }
 
   const handleNavigate = (view: string) => {
     setCurrentView(view);
@@ -47,14 +54,24 @@ export default function App() {
   };
 
   return (
-    <AppProvider>
-      <div className="min-h-screen bg-gray-50">
-        <Navigation currentView={currentView} onNavigate={handleNavigate} />
-        <main className="pt-16">
-          {renderView()}
-        </main>
-        <Toaster />
-      </div>
-    </AppProvider>
+    <div className="min-h-screen bg-gray-50">
+      <Navigation currentView={currentView} onNavigate={handleNavigate} />
+      <main className="pt-16">
+        {renderView()}
+      </main>
+      <Toaster />
+    </div>
   );
 }
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
+    </AuthProvider>
+  );
+}
+
+export default App;

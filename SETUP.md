@@ -56,6 +56,7 @@ npm run preview
 Social Media Photo App/
 ├── src/
 │   ├── components/          # React components
+│   │   ├── AuthPage.tsx              # Login/Signup interface
 │   │   ├── CategoryDetailPage.tsx    # Category view with photos
 │   │   ├── HallOfFamePage.tsx        # Hall of Fame display
 │   │   ├── HomePage.tsx              # Main category browser
@@ -66,7 +67,8 @@ Social Media Photo App/
 │   │   ├── figma/                    # Figma design components
 │   │   └── ui/                       # Reusable UI components (buttons, cards, etc.)
 │   ├── context/
-│   │   └── AppContext.tsx            # Global state management
+│   │   ├── AppContext.tsx            # Global state management
+│   │   └── AuthContext.tsx           # Authentication state
 │   ├── types/
 │   │   └── index.ts                  # TypeScript type definitions
 │   ├── styles/
@@ -91,11 +93,32 @@ Social Media Photo App/
 - **Radix UI** - Accessible component primitives
 - **Lucide React** - Icon library
 - **Sonner** - Toast notifications
+- **localStorage** - Client-side data persistence (authentication & app data)
 
 ## 🧪 Features Implementation
 
+### Authentication System
+The app uses `AuthContext.tsx` for user authentication:
+- **Sign Up**: Create accounts with email, username, password, and optional profile picture
+- **Log In**: Authenticate existing users
+- **Session Management**: Persistent login state across browser refreshes
+- **localStorage**: User accounts stored in browser (demo/development only)
+- **Production Migration**: For real deployment, replace localStorage with:
+  - Firebase Authentication
+  - Supabase Auth
+  - Auth0
+  - Custom backend API (Node.js + JWT + database)
+
 ### State Management
-The app uses React Context (`AppContext.tsx`) for global state:
+The app uses React Context for global state:
+
+#### AuthContext (`context/AuthContext.tsx`)
+- Current authenticated user
+- Sign up / log in / log out functions
+- Session persistence
+- User account storage
+
+#### AppContext (`context/AppContext.tsx`)
 - Current user
 - All users
 - Categories (official, weekly, user-created, private)

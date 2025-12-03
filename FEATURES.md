@@ -5,6 +5,24 @@ A competitive social media photo-sharing platform where users upload photos to c
 
 ## ✨ Key Features
 
+### 🔐 Authentication System
+- **Sign Up**: Create an account with email, username, and password
+  - Optional profile picture upload
+  - All fields validated
+  - Accounts stored securely in browser localStorage
+- **Log In**: Access your account with email and password
+  - Demo accounts available for testing
+  - Persistent sessions across browser refreshes
+- **Log Out**: Sign out anytime via logout button in navigation
+- **Profile Management**: Each user has their own profile with:
+  - Unique username
+  - Custom profile picture
+  - Personal photo uploads
+  - Earned badges and achievements
+  - Voting history
+
+**Note**: Currently uses localStorage for demo purposes. For production, migrate to a backend service like Firebase Authentication, Supabase Auth, or a custom backend API.
+
 ### 📸 Photo Upload System
 - **Upload from Camera Roll**: Choose existing photos from your device
 - **Take Live Photo**: Use your device camera to capture photos directly

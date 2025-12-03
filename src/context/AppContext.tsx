@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Category, Photo, Badge, LeaderboardEntry, HallOfFameEntry } from '../types';
+import { useAuth } from './AuthContext';
 
 interface AppContextType {
   currentUser: User | null;
@@ -27,6 +28,7 @@ export const useApp = () => {
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user: authUser } = useAuth();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -230,10 +232,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     ];
 
     setUsers(mockUsers);
-    setCurrentUser(mockUsers[0]);
     setCategories(mockCategories);
     setPhotos(mockPhotos);
   }, []);
+
+  // Sync current user with authenticated user
+  useEffect(() => {
+    if (authUser) {
+      // Find or create user in users list
+      setUsers(prev => {
+        const existingUser = prev.find(u => u.id === authUser.id);
+        if (existingUser) {
+          return prev;
+        } else {
+          // Create new user from auth user
+          const newUser: User = {
+            id: authUser.id,
+            username: authUser.username,
+            profilePicture: authUser.profilePicture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400',
+            badges: [],
+            selectedBadges: [],
+            isCurrentLeader: false,
+            uploads: [],
+          };
+          return [...prev, newUser];
+        }
+      });
+
+      // Set as current user
+      setCurrentUser(prev => {
+        if (prev?.id === authUser.id) return prev;
+        return users.find(u => u.id === authUser.id) || {
+          id: authUser.id,
+          username: authUser.username,
+          profilePicture: authUser.profilePicture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400',
+          badges: [],
+          selectedBadges: [],
+          isCurrentLeader: false,
+          uploads: [],
+        };
+      });
+    } else {
+      setCurrentUser(null);
+    }
+  }, [authUser, users]);
 
   const addPhoto = (photo: Omit<Photo, 'id' | 'uploadedAt' | 'likes' | 'dislikes' | 'votedBy'>) => {
     const newPhoto: Photo = {
