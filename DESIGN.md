@@ -8,15 +8,12 @@ SnapRank is a React-based single-page application for photo competitions. Users 
 
 **Client-side only** - Everything runs in the browser with no backend server.
 
-```
-Browser
-├── React App (UI)
-├── Context API (State)
-└── localStorage (Data)
-```
-
 ## Technologies Used
 
+### Design
+- **Figma** - UI/UX design and layout prototyping
+
+### Development
 - **React 18.3.1** - UI framework with component-based architecture
 - **TypeScript 5.x** - Type safety and better developer experience
 - **Vite 6.3.5** - Fast build tool and dev server

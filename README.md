@@ -10,10 +10,14 @@ A competitive photo-sharing platform with:
 - Like/dislike voting system
 - Leaderboards and points
 - Achievement badges
-- Hall of Fame
+- Hall of Fame Ranking
 
 ## Technologies Used
 
+### Design
+- **Figma** - UI/UX design and layout prototyping
+
+### Development
 - **React 18.3.1** - Frontend framework
 - **TypeScript 5.x** - Type safety
 - **Vite 6.3.5** - Build tool and dev server
@@ -141,11 +145,11 @@ When you open the app, you'll see a login page.
 
 Five main pages accessible from the top navigation:
 
-- **Home** (🏠) - Browse all photo categories
-- **Upload** (📤) - Upload new photos
-- **Leaderboard** (🏆) - Weekly challenge rankings
-- **Hall of Fame** (🌟) - Best photos of all time
-- **Profile** (👤) - Your profile and uploads
+- **Home** - Browse all photo categories
+- **Upload** - Upload new photos
+- **Leaderboard** - Weekly challenge rankings
+- **Hall of Fame** - Best photos of all time
+- **Profile** - Your profile and uploads
 
 ### 3. Upload Photos
 
@@ -197,78 +201,11 @@ Five main pages accessible from the top navigation:
 
 ---
 
-## Configuration
-
-### Change App Name
-
-**File:** `src/components/Navigation.tsx` (line ~30)
-```tsx
-<span className="text-xl">SnapRank</span>
-// Change "SnapRank" to your app name
-```
-
-**File:** `src/components/AuthPage.tsx` (line ~90)
-```tsx
-<h1 className="text-3xl mb-2">SnapRank</h1>
-// Change "SnapRank" to your app name
-```
-
-### Change Colors
-
-**File:** `tailwind.config.js`
-```javascript
-theme: {
-  extend: {
-    colors: {
-      primary: '#9333ea',    // Purple
-      secondary: '#ec4899',  // Pink
-      // Add your colors here
-    }
-  }
-}
-```
-
-### Change Points System
-
-**File:** `src/context/AppContext.tsx` (line ~320)
-```typescript
-const pointsMap: Record<number, number> = {
-  1: 100,  // 1st place
-  2: 75,   // 2nd place
-  3: 50,   // 3rd place
-  // Modify as desired
-};
-```
-
-### Change Server Port
-
-**File:** `vite.config.ts`
-```typescript
-export default defineConfig({
-  server: {
-    port: 3000,  // Change to any port
-  },
-});
-```
-
----
-
 ## How It Works (Technical Overview)
 
 ### Architecture
 
-This is a **client-side only** application. Everything runs in the browser:
-
-```
-Browser
-  ↓
-React App
-  ↓
-Context API (state management)
-  ↓
-localStorage (data persistence)
-```
-
+This is a client-side only application. Everything runs in the browser.
 No backend server or database required.
 
 ### Data Storage
@@ -383,15 +320,6 @@ Top 3 also receive badge achievements.
 - Don't use incognito/private browsing
 - Don't clear browser data
 - All data is local to your browser
-
----
-
-## Additional Documentation
-
-- **DESIGN.md** - Detailed technical design decisions and architecture
-- **FEATURES.md** - Complete feature documentation
-- **AUTHENTICATION.md** - Authentication system details
-- **SETUP.md** - Extended setup guide
 
 ---
 
