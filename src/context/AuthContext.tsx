@@ -70,64 +70,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Create new user account
   const signup = async (username: string, email: string, password: string, profilePicture?: string): Promise<boolean> => {
-    try {
-      // Get existing users from localStorage
-      const usersData = localStorage.getItem('users');
-      const users = usersData ? JSON.parse(usersData) : [];
+    const usersData = localStorage.getItem('users');
+    const users = usersData ? JSON.parse(usersData) : [];
 
-      // Validate email is not already taken
-      if (users.find((u: any) => u.email === email)) {
-        return false; // Email already exists
-      }
+    if (users.find((u: any) => u.email === email)) return false;
 
-      // Create new user
-      const newUser: AuthUser & { password: string } = {
-        id: `user_${Date.now()}`,
-        username,
-        email,
-        password, // In real app, this would be hashed
-        profilePicture: profilePicture || `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
-      };
+    const newUser = {
+      id: `user_${Date.now()}`,
+      username,
+      email,
+      password,
+      profilePicture: profilePicture || `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
+    };
 
-      // Save to users list
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
 
-      // Set as current user (without password)
-      const { password: _, ...userWithoutPassword } = newUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
+    const { password: _, ...userWithoutPassword } = newUser;
+    setUser(userWithoutPassword);
+    localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
 
-      return true;
-    } catch (error) {
-      console.error('Signup error:', error);
-      return false;
-    }
+    return true;
   };
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    try {
-      // Get users from localStorage
-      const usersData = localStorage.getItem('users');
-      const users = usersData ? JSON.parse(usersData) : [];
+    const usersData = localStorage.getItem('users');
+    const users = usersData ? JSON.parse(usersData) : [];
 
-      // Find user with matching email and password
-      const foundUser = users.find((u: any) => u.email === email && u.password === password);
+    const foundUser = users.find((u: any) => u.email === email && u.password === password);
+    if (!foundUser) return false;
 
-      if (!foundUser) {
-        return false; // Invalid credentials
-      }
+    const { password: _, ...userWithoutPassword } = foundUser;
+    setUser(userWithoutPassword);
+    localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
 
-      // Set as current user (without password)
-      const { password: _, ...userWithoutPassword } = foundUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
-
-      return true;
-    } catch (error) {
-      console.error('Login error:', error);
-      return false;
-    }
+    return true;
   };
 
   const logout = () => {

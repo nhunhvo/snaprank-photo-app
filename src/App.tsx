@@ -18,49 +18,22 @@ function AppContent() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
   // Show login page if user is not authenticated
-  if (!isAuthenticated) {
-    return <AuthPage />;
-  }
-
-  // Navigate to different views
-  const handleNavigate = (view: string) => {
-    setCurrentView(view);
-    if (view !== 'category') {
-      setSelectedCategoryId(null);
-    }
-  };
-
-  // Navigate to specific category detail page
-  const handleCategoryClick = (categoryId: string) => {
-    setSelectedCategoryId(categoryId);
-    setCurrentView('category');
-  };
+  if (!isAuthenticated) return <AuthPage />;
 
   // Render the appropriate page based on current view
   const renderView = () => {
-    switch (currentView) {
-      case 'home':
-        return <HomePage onCategoryClick={handleCategoryClick} />;
-      case 'upload':
-        return <UploadPage onSuccess={() => handleNavigate('home')} />;
-      case 'leaderboard':
-        return <LeaderboardPage />;
-      case 'hall-of-fame':
-        return <HallOfFamePage />;
-      case 'profile':
-        return <ProfilePage />;
-      case 'category':
-        return selectedCategoryId ? (
-          <CategoryDetailPage categoryId={selectedCategoryId} onBack={() => handleNavigate('home')} />
-        ) : null;
-      default:
-        return <HomePage onCategoryClick={handleCategoryClick} />;
-    }
+    if (currentView === 'home') return <HomePage onCategoryClick={(id) => { setSelectedCategoryId(id); setCurrentView('category'); }} />;
+    if (currentView === 'upload') return <UploadPage onSuccess={() => setCurrentView('home')} />;
+    if (currentView === 'leaderboard') return <LeaderboardPage />;
+    if (currentView === 'hall-of-fame') return <HallOfFamePage />;
+    if (currentView === 'profile') return <ProfilePage />;
+    if (currentView === 'category' && selectedCategoryId) return <CategoryDetailPage categoryId={selectedCategoryId} onBack={() => setCurrentView('home')} />;
+    return <HomePage onCategoryClick={(id) => { setSelectedCategoryId(id); setCurrentView('category'); }} />;
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navigation currentView={currentView} onNavigate={handleNavigate} />
+      <Navigation currentView={currentView} onNavigate={setCurrentView} />
       <main className="pt-16">
         {renderView()}
       </main>

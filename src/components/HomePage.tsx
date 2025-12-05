@@ -45,19 +45,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onCategoryClick }) => {
         createdBy: currentUser?.id,
       });
       
-      // Get the created category (it will be the last one)
-      const createdCategory = categories[categories.length - 1];
-      if (categoryType === 'private' && createdCategory?.shareCode) {
-        setShareCode(createdCategory.shareCode);
-      }
-      
       setNewCategoryName('');
       setIsDialogOpen(false);
-      toast.success('Category created!', {
-        description: categoryType === 'private' 
-          ? `Share code: ${shareCode || 'Check back in a moment'}` 
-          : `${newCategoryName} is now live and ready for uploads.`,
-      });
+      toast.success(`${newCategoryName} created!`);
     }
   };
 
@@ -65,15 +55,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onCategoryClick }) => {
     if (joinCode.trim()) {
       const success = joinPrivateCategory(joinCode.trim());
       if (success) {
-        toast.success('Joined private category!', {
-          description: 'You can now view and upload to this category.',
-        });
+        toast.success('Joined category!');
         setJoinCode('');
         setIsJoinDialogOpen(false);
       } else {
-        toast.error('Invalid share code', {
-          description: 'Please check the code and try again.',
-        });
+        toast.error('Invalid share code');
       }
     }
   };

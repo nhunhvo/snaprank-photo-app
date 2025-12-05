@@ -51,9 +51,6 @@ export const UploadPage: React.FC<UploadPageProps> = ({ onSuccess }) => {
     if (!selectedCategory || !imageUrl || !currentUser) return;
 
     setIsUploading(true);
-    
-    // Simulate upload delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
 
     addPhoto({
       userId: currentUser.id,
@@ -64,9 +61,7 @@ export const UploadPage: React.FC<UploadPageProps> = ({ onSuccess }) => {
     });
 
     setIsUploading(false);
-    toast.success('Photo uploaded successfully!', {
-      description: 'Your photo is now live and ready to receive votes.',
-    });
+    toast.success('Photo uploaded!');
     onSuccess();
   };
 

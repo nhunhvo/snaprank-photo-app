@@ -23,30 +23,19 @@ export const AuthPage: React.FC = () => {
     setIsLoading(true);
 
     if (isLogin) {
-      // Login flow
       const success = await login(email, password);
       setIsLoading(false);
       
       if (success) {
-        toast.success('Welcome back!', {
-          description: 'You have successfully logged in.',
-        });
-        // Clear form on success
+        toast.success('Welcome back!');
         setEmail('');
         setPassword('');
-        return; // Exit early on success
       } else {
-        toast.error('Login failed', {
-          description: 'Invalid email or password.',
-        });
-        return; // Exit early on failure
+        toast.error('Invalid email or password');
       }
     } else {
-      // Signup
       if (!username || !email || !password) {
-        toast.error('Missing fields', {
-          description: 'Please fill in all required fields.',
-        });
+        toast.error('Please fill in all required fields');
         setIsLoading(false);
         return;
       }
@@ -55,18 +44,13 @@ export const AuthPage: React.FC = () => {
       setIsLoading(false);
       
       if (success) {
-        toast.success('Account created!', {
-          description: 'Welcome to SnapRank! Start uploading photos.',
-        });
-        // Clear form on success
+        toast.success('Account created!');
         setEmail('');
         setPassword('');
         setUsername('');
         setProfilePicture('');
       } else {
-        toast.error('Signup failed', {
-          description: 'Email already exists or invalid data.',
-        });
+        toast.error('Email already exists');
       }
     }
   };
