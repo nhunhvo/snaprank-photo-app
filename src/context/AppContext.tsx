@@ -28,7 +28,7 @@ export const useApp = () => {
   return context;
 };
 
-// Provider component that manages all app state (users, photos, categories, votes)
+// Provider component that manages users, photos, categories, votes
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user: authUser } = useAuth();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -36,7 +36,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [categories, setCategories] = useState<Category[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
 
-  // Load demo data on first run
+  // Load demo data on first run, demo data gained from Figma designs
   useEffect(() => {
     const mockUsers: User[] = [
       {
@@ -233,10 +233,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       },
     ];
 
-    setUsers(mockUsers);
-    setCategories(mockCategories);
-    setPhotos(mockPhotos);
+    // Load from localStorage or use mock data
+    const savedData = localStorage.getItem('snaprank-app-data');
+    if (savedData) {
+      const { users: savedUsers, categories: savedCategories, photos: savedPhotos } = JSON.parse(savedData);
+      setUsers(savedUsers);
+      setCategories(savedCategories);
+      setPhotos(savedPhotos);
+    } else {
+      setUsers(mockUsers);
+      setCategories(mockCategories);
+      setPhotos(mockPhotos);
+    }
   }, []);
+
+  // Save to localStorage whenever data changes
+  useEffect(() => {
+    if (users.length > 0 || categories.length > 0 || photos.length > 0) {
+      localStorage.setItem('snaprank-app-data', JSON.stringify({ users, categories, photos }));
+    }
+  }, [users, categories, photos]);
 
   // Sync current user with authenticated user
   useEffect(() => {
