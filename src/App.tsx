@@ -11,15 +11,18 @@ import { CategoryDetailPage } from './components/CategoryDetailPage';
 import { AuthPage } from './components/AuthPage';
 import { Toaster } from './components/ui/sonner';
 
+// Main app content - handles navigation and view rendering
 function AppContent() {
   const { isAuthenticated } = useAuth();
   const [currentView, setCurrentView] = useState('home');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
+  // Show login page if user is not authenticated
   if (!isAuthenticated) {
     return <AuthPage />;
   }
 
+  // Navigate to different views
   const handleNavigate = (view: string) => {
     setCurrentView(view);
     if (view !== 'category') {
@@ -27,11 +30,13 @@ function AppContent() {
     }
   };
 
+  // Navigate to specific category detail page
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
     setCurrentView('category');
   };
 
+  // Render the appropriate page based on current view
   const renderView = () => {
     switch (currentView) {
       case 'home':
@@ -64,6 +69,7 @@ function AppContent() {
   );
 }
 
+// Root component - wraps app with Auth and App context providers
 function App() {
   return (
     <AuthProvider>

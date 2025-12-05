@@ -19,6 +19,7 @@ interface HomePageProps {
   onCategoryClick: (categoryId: string) => void;
 }
 
+// Home page - displays all categories organized by type
 export const HomePage: React.FC<HomePageProps> = ({ onCategoryClick }) => {
   const { categories, createCategory, joinPrivateCategory, canAccessCategory, currentUser } = useApp();
   const [newCategoryName, setNewCategoryName] = useState('');
@@ -28,6 +29,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onCategoryClick }) => {
   const [shareCode, setShareCode] = useState('');
   const [joinCode, setJoinCode] = useState('');
 
+  // Filter categories by type for organized display
   const officialBasicCategories = categories.filter(c => c.type === 'official-basic' && c.isActive);
   const officialWeeklyCategories = categories.filter(c => c.type === 'official-weekly' && c.isActive);
   const archivedWeeklyCategories = categories.filter(c => c.type === 'official-weekly' && c.isArchived);

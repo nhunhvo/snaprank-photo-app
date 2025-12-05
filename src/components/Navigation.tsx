@@ -8,10 +8,12 @@ interface NavigationProps {
   onNavigate: (view: string) => void;
 }
 
+// Top navigation bar with page links and logout
 export const Navigation: React.FC<NavigationProps> = ({ currentView, onNavigate }) => {
   const { currentUser } = useApp();
   const { logout } = useAuth();
 
+  // Navigation menu items
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'upload', label: 'Upload', icon: Upload },

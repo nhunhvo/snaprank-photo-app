@@ -16,6 +16,7 @@ interface UploadPageProps {
   onSuccess: () => void;
 }
 
+// Upload page - allows users to upload photos to categories
 export const UploadPage: React.FC<UploadPageProps> = ({ onSuccess }) => {
   const { categories, currentUser, addPhoto, canAccessCategory } = useApp();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -25,8 +26,10 @@ export const UploadPage: React.FC<UploadPageProps> = ({ onSuccess }) => {
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  // Only show active categories user has access to
   const activeCategories = categories.filter(c => c.isActive && canAccessCategory(c.id));
 
+  // Convert uploaded file to base64 image
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -43,6 +46,7 @@ export const UploadPage: React.FC<UploadPageProps> = ({ onSuccess }) => {
     cameraInputRef.current?.click();
   };
 
+  // Submit photo to selected category
   const handleUpload = async () => {
     if (!selectedCategory || !imageUrl || !currentUser) return;
 

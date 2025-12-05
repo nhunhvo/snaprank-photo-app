@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Category, Photo, Badge, LeaderboardEntry, HallOfFameEntry } from '../types';
 import { useAuth } from './AuthContext';
 
+// Context interface - all app data and methods
 interface AppContextType {
   currentUser: User | null;
   users: User[];
@@ -27,6 +28,7 @@ export const useApp = () => {
   return context;
 };
 
+// Provider component that manages all app state (users, photos, categories, votes)
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user: authUser } = useAuth();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -34,7 +36,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [categories, setCategories] = useState<Category[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
 
-  // Initialize mock data
+  // Load demo data on first run
   useEffect(() => {
     const mockUsers: User[] = [
       {

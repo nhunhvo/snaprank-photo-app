@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+// User data structure for authenticated users
 interface AuthUser {
   id: string;
   username: string;
@@ -7,6 +8,7 @@ interface AuthUser {
   profilePicture: string;
 }
 
+// Context methods for authentication
 interface AuthContextType {
   user: AuthUser | null;
   login: (email: string, password: string) => Promise<boolean>;
@@ -17,18 +19,20 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Hook to access auth context in components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 };
 
+// Provider component that manages authentication state
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
 
-  // Initialize demo users and load current user
+  // Initialize demo users and load current user from localStorage on mount
   useEffect(() => {
-    // Initialize demo users if they don't exist
+    // Create demo accounts if this is first time running app
     const usersData = localStorage.getItem('users');
     if (!usersData) {
       const demoUsers = [
@@ -64,13 +68,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  // Create new user account
   const signup = async (username: string, email: string, password: string, profilePicture?: string): Promise<boolean> => {
     try {
       // Get existing users from localStorage
       const usersData = localStorage.getItem('users');
       const users = usersData ? JSON.parse(usersData) : [];
 
-      // Check if email already exists
+      // Validate email is not already taken
       if (users.find((u: any) => u.email === email)) {
         return false; // Email already exists
       }

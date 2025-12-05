@@ -9,20 +9,23 @@ import {
   TabsTrigger,
 } from './ui/tabs';
 
+// Leaderboard page - shows rankings for weekly categories
 export const LeaderboardPage: React.FC = () => {
   const { categories, getLeaderboard } = useApp();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
   const [updateIndicator, setUpdateIndicator] = useState(false);
 
+  // Filter to only weekly challenge categories
   const weeklyCategories = categories.filter(c => c.type === 'official-weekly' && c.isActive);
 
+  // Auto-select first weekly category on load
   useEffect(() => {
     if (weeklyCategories.length > 0 && !selectedCategoryId) {
       setSelectedCategoryId(weeklyCategories[0].id);
     }
   }, [weeklyCategories, selectedCategoryId]);
 
-  // Simulate real-time updates
+  // Show "UPDATED" indicator periodically to simulate real-time updates
   useEffect(() => {
     const interval = setInterval(() => {
       setUpdateIndicator(true);
@@ -35,6 +38,7 @@ export const LeaderboardPage: React.FC = () => {
   const leaderboard = selectedCategoryId ? getLeaderboard(selectedCategoryId) : [];
   const selectedCategory = categories.find(c => c.id === selectedCategoryId);
 
+  // Color code ranks (gold, silver, bronze)
   const getRankColor = (rank: number) => {
     if (rank === 1) return 'bg-yellow-500';
     if (rank === 2) return 'bg-gray-400';

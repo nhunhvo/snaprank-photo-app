@@ -7,21 +7,23 @@ import { Card } from './ui/card';
 import { toast } from 'sonner';
 import { Camera, Upload } from 'lucide-react';
 
+// Authentication page - handles both login and signup
 export const AuthPage: React.FC = () => {
   const { login, signup } = useAuth();
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(true); // Toggle between login/signup
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Handle form submission for both login and signup
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     if (isLogin) {
-      // Login
+      // Login flow
       const success = await login(email, password);
       setIsLoading(false);
       
@@ -69,6 +71,7 @@ export const AuthPage: React.FC = () => {
     }
   };
 
+  // Convert uploaded image to base64 for storage
   const handleProfilePictureUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
